@@ -18,7 +18,7 @@ jobs:
       - run: npm run build
       - run: npm test
       - name: Deploy
-        uses: Parchuk/CI-CD@v1
+        uses: Parchuk/CI-CD
         with:
           target_branch: gh-pages
           build_dir: build
