@@ -1,26 +1,52 @@
-name: Node.js CI
+#name: Node.js CI
+#on:
+#  push:
+#    branches:
+#      - master
+#
+#jobs:
+#  build-test-deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Set-up Node
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: '10.x'
+#      - run: npm install
+#      - run: npm run build
+#      - run: npm test
+#      - name: Deploy
+#        uses: Parchuk/CI-CD/@master
+#        with:
+#          target_branch: gh-pages
+#          build_dir: build
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+
+name: Run Tests
 on:
   push:
     branches:
-      - master
+      - main
+  pull_request:
 
 jobs:
-  build-test-deploy:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set-up Node
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v3
+
+      - name: Set Node.JS
+        uses: actions/setup-node@v3
         with:
-          node-version: '10.x'
+          node-version: 16.x
+
+      - name: Install dependencies
       - run: npm install
       - run: npm run build
-      - run: npm test
-      - name: Deploy
-        uses: Parchuk/CI-CD/@master
-        with:
-          target_branch: gh-pages
-          build_dir: build
+      # Drafts your next Release notes as Pull Requests are merged into "main"
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
