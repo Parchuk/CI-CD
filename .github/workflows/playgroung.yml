@@ -18,9 +18,9 @@ jobs:
       - run: npm run build
       - run: npm test
       - name: Deploy
-        uses: Parchuk/CI-CD
+        uses: Parchuk/CI-CD/master
         with:
           target_branch: gh-pages
           build_dir: build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
