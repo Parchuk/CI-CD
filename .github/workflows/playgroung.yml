@@ -1,62 +1,46 @@
-#name: Node.js CI
-#on:
-#  push:
-#    branches:
-#      - master
-#
-#jobs:
-#  build-test-deploy:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Set-up Node
-#        uses: actions/setup-node@v1
-#        with:
-#          node-version: '10.x'
-#      - run: npm install
-#      - run: npm run build
-#      - run: npm test
-#      - name: Deploy
-#        uses: Parchuk/CI-CD/@master
-#        with:
-#          target_branch: gh-pages
-#          build_dir: build
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
-
-# Created by MichaelCurrin
-# https://gist.github.com/MichaelCurrin/a698731096f78240f653faf9a9127cba
-
-name: Build and deploy
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches:
-      - master
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
-  build:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@master
-        with:
-          persist-credentials: false
-
-      - name: Install 🔧
-        run: npm install
-
-      - name: Build 🏗️
-        run: npm run build
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
+      - name: install
+        run: npm install
+      - name: build
+        run: npm run build
+        with:
+          # Upload entire repository
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-        with:
-          github_token: ${{ secrets.ACTIONS_ID_TOKEN_REQUEST_URL }}
-          publish_dir: dist
-
