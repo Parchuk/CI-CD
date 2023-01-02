@@ -51,7 +51,7 @@ jobs:
         run: |
           npm run build
       - name: Deploy to GH Pages 🚀
-        uses: parchuk/CI-CD/@master
+        uses: parchuk/CI-CD/@v777
         with:
           github_token: ${{ secrets.REPO_TOKEN }}
           publish_dir: dist
